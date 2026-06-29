@@ -12,3 +12,13 @@ export async function getById(id: number) {
     });
     return user;
 }
+
+export async function createUser(data: {email: string, name: string}){
+    const user = await prisma.user.create({
+        data: {
+            email: data.email,
+            name: data.name
+        }
+    });
+    return user;
+}
