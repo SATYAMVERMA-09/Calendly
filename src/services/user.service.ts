@@ -1,5 +1,6 @@
 import { getAll,getById } from '../repositories/user.repository.js';
 import { createUser } from '../repositories/user.repository.js';
+import { badRequest, notFound } from '../utils/api-error.js';
 
 export async function findAllUsers(){
     const users = await getAll();
@@ -8,14 +9,14 @@ export async function findAllUsers(){
 export async function findById(id: number) {
     const user = await getById(id);
     if(!user){
-        throw new Error("User not found! ");
+        throw notFound("User not found!");
     }
     else return user;
 }
 export async function createUserService(data: {email: string, name: string}){
     const user = await createUser(data);
     if(!user){
-        throw new Error("User not created! ");
+        throw badRequest("User not created! ");
     }
     else return user;
 }
