@@ -13,7 +13,6 @@ export async function findById(req: Request, res:Response){
     sendSuccess(res, response);
 }
 export async function createUser(req: Request, res: Response){
-    const { email, name } = req.body;
-    const response = await createUserService({ email, name });
-    sendSuccess(res, response);
+    const newUser = await createUserService(req.body);
+    sendSuccess(res, newUser, 201); 
 }
