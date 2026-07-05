@@ -7,7 +7,7 @@ export async function findAllUsers(_req: Request,res: Response){
     const response = await findAllUsersService();
     sendSuccess(res, response);
 }
-export async function findById(req: Request, res:Response) {
+export async function findById(req: Request, res:Response){
     const { id } = req.params;
     const response = await findByIdService(Number(id));
     sendSuccess(res, response);
