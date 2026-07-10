@@ -1,7 +1,6 @@
-import { CreateUserDto } from '../dtos/user.dto.js';
-import { findByEmail, getAll,getById } from '../repositories/user.repository.js';
-import { createUser } from '../repositories/user.repository.js';
-import { badRequest, conflict, notFound } from '../utils/api-error.js';
+import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto.js';
+import { findByEmail, getAll,getById,create, update, remove } from '../repositories/user.repository.js';
+import { conflict, notFound } from '../utils/api-error.js';
 
 export async function findAllUsers(){
     const users = await getAll();
@@ -14,11 +13,34 @@ export async function findById(id: number) {
     }
     else return user;
 }
-export async function createUserService(data: CreateUserDto){
+export async function createUser(data: CreateUserDto){
     const existingUser = await findByEmail(data.email);
     if(existingUser) {
         throw conflict('User already exists');
     }
 
-    return createUser(data);
+    return create(data);
+}
+export async function updateUser(id: number, data: UpdateUserDto){
+    const user = await getById(id);
+    if(!user) {
+        throw notFound('User not found');
+    }
+    if(data.email && data.email !== user.email){
+        const existingUser = await findByEmail(data.email);
+        if(existingUser) {
+            throw conflict("User already exists");
+        }
+    }
+
+    return update(id, data);
+}
+
+export async function deleteUser(id: number) {
+    const user = await getById(id);
+    if(!user) {
+        throw notFound('User not found');
+    }
+
+    return remove(id);
 }
