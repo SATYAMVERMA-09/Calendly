@@ -1,5 +1,6 @@
 import { prisma } from "../config/database.js";
 import { CreateEventTypeDto, UpdateEventTypeDto } from "../dtos/event-type.dto.js";
+import { conflict } from "../utils/api-error.js";
 
 export async function findByHostId(hostId: number){
     const eventTypes = await prisma.eventType.findMany({
@@ -54,4 +55,14 @@ export async function findByHostAndSlug(hostId: number, slug: string){
         }
     });
     return eventType;
+}
+
+export async function slugExistsForHost(hostId: number, slug: string){
+    const existingSlug = await prisma.eventType.findFirst({
+        where: {
+            hostId,
+            slug,
+        }
+    });
+    return existingSlug != null;
 }
