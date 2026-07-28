@@ -1,0 +1,44 @@
+import { Request, Response } from "express";
+import { 
+    listEventTypes as listEventTypesService ,
+    getEventTypeById as getEventTypeByIdService,
+    createEventType as createEventTypeService,
+    updateEventType as updateEventTypeService,
+    removeEventType as removeEventTypeService,
+    getEventTypePublic as getEventTypePublicService,
+} from "../services/event-types.service.js";
+
+import { sendSuccess } from "../utils/api-response.js";
+
+export async function list(req: Request, res: Response){
+    const eventTypes = await listEventTypesService(req.userId);
+    sendSuccess(res, eventTypes);
+}
+
+export async function getById(req: Request, res: Response){
+    const { id } = req.params;
+    const eventType = await getEventTypeByIdService(Number(id),req.userId);
+    sendSuccess(res, eventType);
+}
+
+export async function create(req: Request, res:Response){
+    const eventType = await createEventTypeService(req.userId, req.body);
+    sendSuccess(res, eventType);
+}
+
+export async function update(req: Request, res: Response){
+    const { id } = req.params;
+    const eventType = await updateEventTypeService(req.userId,Number(id),req.body);
+    sendSuccess(res,eventType);
+}
+
+export async function remove(req: Request, res: Response){
+    const { id } = req.params;
+    await removeEventTypeService(req.userId,Number(id));
+    sendSuccess(res, null, 200, 'Event type deleted successfully');
+}
+export async function getPublicEventType(req: Request, res: Response){
+    const { userId, slug } = req.params;
+    const eventType = await getEventTypePublicService(Number(userId),String(slug));
+    sendSuccess(res, eventType);
+}

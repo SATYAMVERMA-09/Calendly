@@ -1,5 +1,7 @@
 import express, { Express } from 'express';
 import { userRouter } from './routers/user.router.js';
+import { eventTypeRouter } from './routers/event-type.router.js';
+import { publicEventRouter } from './routers/public-event.router.js';
 import { errorHandler } from './middleware/error-handler.js';
 import { routeNotFound } from './middleware/route-not-found.js';
 
@@ -17,6 +19,8 @@ app.get('/health',(_req,res)=>{
 })
 
 app.use('/api/users', userRouter);
+app.use('/api/event-types', eventTypeRouter);
+app.use('/api/public', publicEventRouter);
 
 app.use(routeNotFound);
 app.use(errorHandler);
