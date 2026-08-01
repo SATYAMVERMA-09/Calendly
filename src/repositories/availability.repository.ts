@@ -1,7 +1,6 @@
-import { addAbortListener } from "node:events";
 import { prisma } from "../config/database.js";
 import { CreateAvailabiltyExceptioneDto, CreateAvailabiltyRuleDto, UpdateAvailabiltyExceptionDto, UpdateAvailabiltyRuleDto } from "../dtos/availability.dto.js";
-import { start } from "node:repl";
+
 
 export async function findRulesByUser(userId: number){
     const rule = await prisma.availabilityRule.findMany({
