@@ -64,7 +64,7 @@ export async function findExceptionsByUser(userId: number){
 }
 
 export async function findExceptionsById(id: number){
-    const exception = await prisma.availabilityException.findMany({
+    const exception = await prisma.availabilityException.findUnique({
         where: {
             id,
         },

@@ -16,9 +16,18 @@ export const createAvailabilityRuleSchema = createAvailabilityRuleBaseSchema.ref
     { message: "Start time must be before end time"}
 );
 
-export const updateAvailabilityRuleSchema = createAvailabilityRuleSchema.partial();
+export const updateAvailabilityRuleSchema = createAvailabilityRuleBaseSchema.partial();
 
-const createAvailabilityExceptionSchema = z.object({
+export const availabilityExceptionBaseSchema = z.object({
+    date: z.string().regex(dateRegex,"Date must be in YYYY-MM-DD format "),
+    type: z.enum(["BLOCK_FULL_DAY","BLOCK_PARTIAL","ADD_AVAILABLE_WINDOW"]),
+    startTime: z.string().regex(timeRegex, "Start time must be in HH:mm format").optional(),
+    endTime: z.string().regex(timeRegex, "End time must be in HH:mm format").optional(),
+    timezone: z.string().default("UTC"),
+    reason: z.string().max(500).optional(),
+});
+
+export const createAvailabilityExceptionSchema = z.object({
     date: z.string().regex(dateRegex,"Date must be in YYYY-MM-DD format "),
     type: z.enum(["BLOCK_FULL_DAY","BLOCK_PARTIAL","ADD_AVAILABLE_WINDOW"]),
     startTime: z.string().regex(timeRegex, "Start time must be in HH:mm format").optional(),
@@ -39,7 +48,7 @@ const createAvailabilityExceptionSchema = z.object({
     }
 })
 
-export const updateAvailabilityExceptionSchema = createAvailabilityExceptionSchema.partial();
+export const updateAvailabilityExceptionSchema = availabilityExceptionBaseSchema.partial();
 
 export type CreateAvailabiltyRuleDto = z.infer<typeof createAvailabilityRuleSchema>;
 export type UpdateAvailabiltyRuleDto = z.infer<typeof updateAvailabilityRuleSchema>;

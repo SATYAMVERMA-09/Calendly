@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { ApiError } from "../utils/api-error.js";
-import { success } from "zod";
 import { NODE_ENV } from "../config/env.js";
 
 export function errorHandler(err: Error, _req: Request, res: Response, _next: NextFunction){
