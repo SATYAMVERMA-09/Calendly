@@ -45,7 +45,7 @@ export async function removeEventType(hostId: number, id: number) {
     if(!eventType){
         throw notFound('Event type not found');
     }
-    if(eventType.id !== hostId) {
+    if(eventType.hostId !== hostId) {
         throw forbidden("You are not authorised to delete this event type");
     }
     return remove(id);   
