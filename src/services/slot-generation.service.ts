@@ -140,4 +140,22 @@ export function applyExceptionForDate(
     return mergeWindows(windows);
 }  
 
-        
+export function windowsForWeekdayRule(
+    date: DateTime,
+    weekday: number,
+    startTime: string,
+    endTime: string,
+    timeZone: string,
+): TimeWindow[] {
+
+    const localDate = date.setZone(timeZone).startOf('day');
+    const luxonWeekday = weekday === 0? 7: weekday;
+    
+    if(localDate.weekday !== luxonWeekday) return [];
+
+    const start = parseTimeOnDate(localDate,startTime,timeZone);
+    const end = parseTimeOnDate(localDate,endTime,timeZone);
+
+    if(!start.isValid || !end.isValid || start >= end) return [];
+    return [{start, end}];
+}
